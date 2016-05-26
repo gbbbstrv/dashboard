@@ -1,0 +1,362 @@
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+  <title>Webex CI</title>
+
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css">
+  <!--<link rel="stylesheet" type="text/css" href="css/DT_bootstrap.css">-->
+  <link type="text/css" href="css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+  <link type="text/css" href="css/jquery.dataTables.min.css" rel="stylesheet" />
+  <link type="text/css" href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+  <link type="text/css" href="css/font-awesome.min.css" rel="stylesheet" />
+  <link type="text/css" href="css/bootstrap.css" rel="stylesheet" />
+
+
+  <link rel="stylesheet" href="css/index.css">
+  <script type="text/javascript" charset="utf-8" language="javascript" src="js/Chart.js"></script>
+  <script type="text/javascript" charset="utf-8" language="javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript" charset="utf-8" language="javascript" src="js/jquery.dataTables.js"></script>
+  <script type="text/javascript" charset="utf-8" language="javascript" src="js/DT_bootstrap.js"></script>
+    <script type="text/javascript" charset="utf-8" language="javascript" src="js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" charset="utf-8" language="javascript" src="js/locales/bootstrap-datetimepicker.fr.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui-1.8.17.custom.min.js"></script>
+
+  <script type="text/javascript" src="js/dataTables.bootstrap.min.js"></script>
+  <script type="text/javascript">
+      function getNowFormatDate() {
+          var date = new Date();
+          var seperator1 = "-";
+          var seperator2 = ":";
+          var month = date.getMonth() + 1;
+          var strDate = date.getDate();
+          if (month >= 1 && month <= 9) {
+              month = "0" + month;
+          }
+          if (strDate >= 0 && strDate <= 9) {
+              strDate = "0" + strDate;
+          }
+          var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+//                  + " " + date.getHours() + seperator2 + date.getMinutes()
+//                  + seperator2 + date.getSeconds();
+          return currentdate;
+      }
+
+//      $(function(){
+//          $('#example tbody').on('click','tr', function () {
+//
+//              window.location.href="gatepipeline.html?commitId="+$('td', this).eq(1).text()+"&project="+$('td', this).eq(2).text()+
+//              "&repository="+$('td', this).eq(3).text()+"&branch="+$('td', this).eq(4).text();
+//          } );
+//      })
+
+    $(document).ready(function() {
+
+            $('.form_datetime').datetimepicker({
+                //language:  'fr',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                forceParse: 0,
+                showMeridian: 1
+            });
+            $('.form_date').datetimepicker({
+//                language: 'fr',
+                format: "yyyy-mm-dd",
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0
+            });
+            $('.form_time').datetimepicker({
+                language: 'fr',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 1,
+                minView: 0,
+                maxView: 1,
+                forceParse: 0
+            });
+
+
+        $.ajax({
+        type: "POST",
+        url: "php/webexci/gatehome.php",
+            async: false,
+//            data:$('#config').serialize(),//格式化表单参数或者也可以使用data: {'folder':$('input[name=folder]').val(),'page':$('input[name=page]').val()},
+//            dataType: "text",
+//            data: "people="+ '1',
+//        data: {'sql':$('textarea[name=sql]').val(),'page':$('input[name=page]').val()},
+        error:function(){
+          alert('error');
+        },
+        success: function (data) {
+////          $("#example").dataTable().fnClearTable();
+//            alert(data);
+//            var data={
+//                "data": [
+//                    {
+//                        "id": "4",
+//                        "time": "2016-05-23 12:46:04",
+//                        "commitId": "26e252bc11295514728ab405b57901b94a67584e",
+//                        "project": "cctgfork",
+//                        "repository": "webex-web-joinservice",
+//                        "branch": "refs\/heads\/gate\/jianmli",
+//                        "type": "2",
+//                        "author": "Jimmy Li (jianmli)",
+//                        "email": "jianmli@cisco.com",
+//                        "statue": null
+//                    },
+//                    {
+//                        "id": "2",
+//                        "time": "2016-05-23 12:30:20",
+//                        "commitId": "e5a07ed394350c7f58d03688eca538ee572148e3",
+//                        "project": "cctgfork",
+//                        "repository": "myTest",
+//                        "branch": "refs\/heads\/gate\/penghu3",
+//                        "type": "2",
+//                        "author": "Peng Wei Hu -X (penghu - CIIC at Cisco)",
+//                        "email": "penghu@cisco.com",
+//                        "statue": null
+//                    },
+//                    {
+//                        "id": "1",
+//                        "time": "2016-05-23 12:27:09",
+//                        "commitId": "fac794f4976f1f3417f7d95f05127ffda1f0aac3",
+//                        "project": "cctgfork",
+//                        "repository": "webex-web-joinservice",
+//                        "branch": "refs\/heads\/gate\/bluan2",
+//                        "type": "2",
+//                        "author": "Baojun Luan (bluan)",
+//                        "email": "bluan@cisco.com",
+//                        "statue": null
+//                    }
+//
+//            ],
+//            "options": [
+//
+//            ],
+//                    "file": [
+//
+//            ]
+//        };
+          $("#example").dataTable().fnDestroy();
+          var json = eval('(' + data + ')');
+//        var   json =data;
+          var list=json.data;
+          var tbBody="";
+        for(var i in list){
+            tbBody += "<tr>" +
+//                    "<td><div align=\"center\">"+json.data[i].id+"</div></td>" +
+                    "<td width=\"120px\" style=\"word-wrap:break-all;height:100%\"><div align=\"center\"><a href='gatepipeline.html?commitId="+json.data[i].commitId+"&project="+
+                    json.data[i].project+"&repository="+json.data[i].repository+"&branch="+json.data[i].branch+"'> "+json.data[i].time+"</a></div></td>" +
+                    "<td width=\"80px\" title='"+json.data[i].commitId+"' style=\"word-wrap:break-all;height:100%\"><div align=\"center\">"+json.data[i].commitId.substring(0,11)+"</div></td>" +
+                    "<td width=\"30px\" style=\"word-wrap:break-all;height:100%\"><div align=\"center\">"+json.data[i].project+"</div></td>" +
+                    "<td width=\"100px\" style=\"word-wrap:break-all;height:100%\"><div align=\"center\"><div align=\"center\">"+json.data[i].repository+"</div></td>" +
+                    "<td width=\"120px\" style=\"word-wrap:break-all;height:100%\"><div align=\"center\">"+json.data[i].branch.substring(11,json.data[i].branch.length)+"</div></td>" +
+                    "<td width=\"120px\" style=\"word-wrap:break-all;height:100%\"><div align=\"center\">"+json.data[i].author+"</div></td>" +
+                    "<td class='text-center f30'><i class='fa fa-check-circle text-success'></i></td>"
+            "/tr>"
+            // <i class='fa fa-check-circle text-warning'>warning</i>
+            // <i class='fa fa-check-circle text-warning'>warning</i>
+            // <i class='fa fa-minus-circle text-danger'></i>
+        }
+          $("#example tbody tr").remove();
+          $("#example").append(tbBody);
+
+
+          $("#example").DataTable( {
+              "bProcessing":true,
+            "order": [ 0, 'des' ],
+            searching:false,
+            "bAutoWidth" : true,
+            "aLengthMenu" :[10,20,30],
+            "iDisplayLength" : 10,
+            "aaSorting" : [[1, "asc"]],
+//                ajax: "php/test.php",
+//                data:dataSet,
+          } );
+        }
+      });
+
+    } );
+
+    function searchcommint(){
+//        alert("22");
+        $("#load").show();
+        $.ajax({
+            type: "POST",
+            url: "php/webexci/gatesearch.php",
+//            data:$('#config').serialize(),//格式化表单参数或者也可以使用data: {'folder':$('input[name=folder]').val(),'page':$('input[name=page]').val()},
+//            dataType: "text",
+//            data: "people="+ '1',
+            data: {'project':$('select[name=project]').val(),
+                    'repository':$('input[name=repository]').val(),'branch':$('input[name=branch]').val(),'author':$('input[name=author]').val()},
+            error:function(){
+                alert('error');
+            },
+            success: function (data) {
+//                alert(data);
+                $("#example").dataTable().fnDestroy();
+                var json = eval('(' + data + ')');
+                var list=json.data;
+                var tbBody="";
+                for(var i in list){
+                    tbBody += "<tr>" +
+//                    "<td><div align=\"center\">"+json.data[i].id+"</div></td>" +
+                            "<td width=\"120px\" style=\"word-wrap:break-all;height:100%\"><div align=\"center\"><a href='gatepipeline.html?commitId="+json.data[i].commitId+"&project="+
+                            json.data[i].project+"&repository="+json.data[i].repository+"&branch="+json.data[i].branch+"'> "+json.data[i].time+"</a></div></td>" +
+                            "<td width=\"80px\" title='"+json.data[i].commitId+"' style=\"word-wrap:break-all;height:100%\"><div align=\"center\">"+json.data[i].commitId.substring(0,11)+"</div></td>" +
+                            "<td width=\"30px\" style=\"word-wrap:break-all;height:100%\"><div align=\"center\">"+json.data[i].project+"</div></td>" +
+                            "<td width=\"100px\" style=\"word-wrap:break-all;height:100%\"><div align=\"center\"><div align=\"center\">"+json.data[i].repository+"</div></td>" +
+                            "<td width=\"120px\" style=\"word-wrap:break-all;height:100%\"><div align=\"center\">"+json.data[i].branch.substring(11,json.data[i].branch.length)+"</div></td>" +
+                            "<td width=\"120px\" style=\"word-wrap:break-all;height:100%\"><div align=\"center\">"+json.data[i].author+"</div></td>" +
+                            "<td class='text-center f30'><i class='fa fa-check-circle text-success'></i></td>"
+                    "/tr>"
+                    // <i class='fa fa-check-circle text-warning'>warning</i>
+                    // <i class='fa fa-check-circle text-warning'>warning</i>
+                    // <i class='fa fa-minus-circle text-danger'></i>
+                }
+                $("#example tbody tr").remove();
+                $("#example").append(tbBody);
+
+
+                $("#example").DataTable( {
+                    "bProcessing":true,
+                    "order": [ 0, 'des' ],
+                    searching:false,
+                    "bAutoWidth" : true,
+                    "aLengthMenu" :[10,20,30],
+                    "iDisplayLength" : 10,
+                    "aaSorting" : [[1, "asc"]],
+//                ajax: "php/test.php",
+//                data:dataSet,
+                } );
+            }
+        });
+
+
+    } ;
+
+
+
+
+
+
+
+  </script>
+
+
+</head>
+<body>
+
+<div class="navbar">
+  <div class="navbar-inner">
+			<span class="brand">
+				<img src="img/cisco-webex-ci1.png">
+			</span>
+    <div class="nav-collapse collapse navbar-responsive-collapse">
+      <ul class="nav">
+        <li class="divider-vertical"></li>
+      </ul>
+
+
+
+        <!--<li class="topbar-btn"><a href="http://10.224.38.156:8021/SMSUIConsole/main?entry-point=clops#modal-about" data-toggle="modal"><i class="icon-info-sign"></i> About</a></li>-->
+      </ul>
+    </div><!-- /.nav-collapse -->
+  </div>
+</div>
+
+
+<div class="tab-content">
+
+
+<!--==================batch-report-->
+  <div class="tab-pane active" id="batch-report">
+
+    <div class="container2" >
+    <h1 class="mui-title">Gate Build Tracking Header</h1>
+
+      <form name="search" class="form-inline" method="post" id="search" role="form">
+      <div class="form-group" align="center" >
+
+          <!--<label  class="sr-only">time:</label>-->
+          <!--<input type="text"  style="width: 140px;height: auto" class="controls input-append date form_datetime"  name="starttime" id="starttime" placeholder="starttime">- -->
+          <!--<input type="text" style="width: 140px;height: auto" class="controls input-append date form_datetime" name="endtime" id="endtime" placeholder="endtime">-->
+
+        <!--<label  class="sr-only">project:</label>-->
+        <!--<select name="project"  class="form-control" style="width: 90px;">-->
+          <!--&lt;!&ndash;<option value="cctg">cctg</option>&ndash;&gt;-->
+          <!--<option value="cctgfork">cctgfork</option>-->
+          <!--&lt;!&ndash;<option value="cctg-dev">cctg-dev</option>&ndash;&gt;-->
+        <!--</select>-->
+
+
+          <label >Repository:</label>
+          <input type="text"  name="repository"   style="width: 180px;height: auto" class="form-control" id="repository" >
+
+          <label  >Branch:</label>
+          <input type="text" name="branch" style="width: 140px;height: auto" class="form-control" id="branch" >
+
+          <label  >Author:</label>
+          <input type="text"  name="author"  style="width: 140px;height: auto" class="form-control" id="author" >
+
+          <button type="button" id="search-button" class="btn btn-default" onclick="searchcommint()">Search</button>
+      </div>
+
+
+
+
+      </form>
+
+
+
+
+      <table id="example" class="display" width="100%">
+        <thead>
+        <tr>
+            <th width="120px" class="text-center">Createtime</th>
+            <th width="80px" class="text-center">CommitId</th>
+            <th width="30px" class="text-center">Project</th>
+            <th width="100px" class="text-center">Repository</th>
+            <th width="80px" class="text-center">Branch</th>
+            <th width="120px" class="text-center">Author</th>
+            <!--<th width="120px">email</th>-->
+            <th width="80px" class="text-center">Status</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+    <!--==================batch-report-->
+
+
+
+</div>
+<footer>
+    <span class="copy">Cisco WebEx CI team Copyright © 2016  <a href="mailto:webexci@cisco.com">webexci@cisco.com</a></span>
+    <!--<div class="" style="font-size:18px;">-->
+        <!--<i class='fa fa-check-circle text-success'>success</i>-->
+        <!--<i class='fa fa-exclamation-circle text-warning'>warning</i>-->
+        <!--<i class='fa fa-minus-circle text-danger'>abort</i>-->
+        <!--<i class='fa fa-question-circle text-info'>help</i>-->
+        <!--<i class='fa fa-times-circle text-danger'>failed</i>-->
+        <!--<i class='fa fa-arrow-circle-right text-primary'>running</i>-->
+    <!--</div>-->
+</footer>
+</body>
+</html>

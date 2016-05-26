@@ -1,0 +1,441 @@
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title>Webex CI</title>
+    <!--<link rel="stylesheet" type="text/css" href="css/DT_bootstrap.css">-->
+    <link type="text/css" href="css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+    <link type="text/css" href="css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link type="text/css" href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <!-- <link type="text/css" href="css/bootstrap.min.css" rel="stylesheet" /> -->
+    <link type="text/css" href="css/bootstrap.css" rel="stylesheet" />
+    <link type="text/css" href="css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/index.css">
+    <style type="text/css">
+
+    </style>
+
+
+    <script type="text/javascript" charset="utf-8" language="javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" language="javascript" src="js/Chart.js"></script>
+    <script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+
+    <script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+    <script type="text/javascript" charset="utf-8" language="javascript" src="js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf-8" language="javascript" src="js/DT_bootstrap.js"></script>
+    <script type="text/javascript" charset="utf-8" language="javascript" src="js/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" charset="utf-8" language="javascript" src="js/locales/bootstrap-datetimepicker.fr.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!--<script type="text/javascript" src="js/jquery-ui-1.8.17.custom.min.js"></script>-->
+
+    <script type="text/javascript" src="js/dataTables.bootstrap.min.js"></script>
+    <script type='text/javascript'>
+
+        var thisURL = document.URL;
+        var get=thisURL.split('?');
+        var getval="";
+        var commitId_para="";
+        var project_para="";
+        var repository_para="";
+        var branch_para="";
+        if(get.length>1) {
+            getval = get[1];
+        }
+        var  val=getval.split("&");
+        if (val.length==4) {
+            commitId_para = val[0].split("=")[1];
+            project_para = val[1].split("=")[1];
+            repository_para = val[2].split("=")[1];
+            branch_para = val[3].split("=")[1];
+        }
+
+        $(document).ready(function () {
+            $("#commitId").text(commitId_para.substring(0,11));
+            $("#commitId").attr({"title": commitId_para});
+            $("#repository").text(repository_para);
+            $("#branch").text(branch_para.substring(11,branch_para.length));
+
+
+            $.ajax({
+                type: "POST",
+                url: "php/webexci/gatepipeline.php",
+                data: {'commitId':commitId_para,'project':project_para,'repository':repository_para,'branch':branch_para},
+                async: false,
+                error:function(){
+                    alert('error');
+                },
+                success: function (str) {
+                    alert(str);
+                    var data = eval('(' + str + ')');
+
+//         var data={
+//             "property": {
+//                 "commitid": "dhadhakdhajshd",
+//                 "stashproject": "cctg",
+//                 "repository": "webex",
+//                 "branch": "refs/heads/gate/penghu",
+//                 "buildoption": "gate",
+//                 "author": "penghu",
+//                 "email": "penghu@cisco.com"
+//             },
+//             "stage": [
+//                 {
+//                     "name": "checkin",
+//                     "starttime": "2016-03-12 11:11:11",
+//                     "status": "2"
+//                 },
+//                 {
+//                     "name": "pr",
+//                     "createtime": "2016-03-21 11:12:13",
+//                     "updatetime": "2016-03-21 11:12:13",
+//                     "status": "2"
+//
+//                 }
+//             ],
+//             "build": [
+//                 {
+//                     "jobid": "2222222222",
+//                     "componentname": "page",
+//                     "buildnumber": "12",
+//                     "version": "31.6.0",
+//                     "buildoption": "0",
+//                     "timestamp": "2016-03-21 11:12:14",
+//                     "status": "2",
+//                     "stepjob": [
+//                         {
+//                             "stepjob": "1111111",
+//                             "stepname": "checkout",
+//                             "createtime": "2016-05-15 17:20:23",
+//                             "updatetime": "2016-05-15 17:22:29",
+//                             "status": "1"
+//                         }
+//                     ]
+//                 },
+//                 {
+//                     "jobid": "3333333333",
+//                     "componentname": "page",
+//                     "buildnumber": "12",
+//                     "version": "31.6.0",
+//                     "buildoption": "0",
+//                     "timestamp": "2016-03-21 11:12:12",
+//                     "status": "1",
+//                     "stepjob": [
+//                         {
+//                             "stepjob": "1ddddd",
+//                             "stepname": "checkout",
+//                             "createtime": "2016-05-15 10:23:21",
+//                             "updatetime": "2016-05-15 10:23:21",
+//                             "status": "2"
+//                         },
+//                         {
+//                             "stepjob": "2ddddd",
+//                             "stepname": "TA",
+//                             "createtime": "2016-05-15 10:23:21",
+//                             "updatetime": "2016-05-15 10:23:21",
+//                             "status": "1"
+//                         },
+//                         {
+//                             "stepjob": "3ddddd",
+//                             "stepname": "Build",
+//                             "createtime": "2016-05-15 10:23:21",
+//                             "updatetime": "2016-05-15 10:23:21",
+//                             "status": "1"
+//                         },
+//                         {
+//                             "stepjob": "4ddddd",
+//                             "stepname": "UT",
+//                             "createtime": "2016-05-15 10:23:21",
+//                             "updatetime": "2016-05-15 10:23:21",
+//                             "status": "1"
+//                         }
+//                     ]
+//                 }
+//             ],
+//             "logs":[
+//                 {
+//                     "buildnumber":"123",
+//                     "stagename":"2",
+//                     "status":"2",
+//                     "timestamp":"2016-03-21 11:12:13",
+//                     "url":"",
+//                     "log":"open"
+//                 },
+//                 {
+//                     "buildnumber":"123",
+//                     "stagename":"2",
+//                     "status":"3",
+//                     "timestamp":"2016-03-21 11:12:13",
+//                     "url":"",
+//                     "log":"open"
+//                 }
+//             ]
+//         };
+
+                    function function_name(id,stepjob) {
+
+                        var strings = "<ul>" +
+                                "<li class='' id=checkout" + id + ">" +
+//                            "<span class='name'>checkout</span>" +
+                                "<span class='dot' data-toggle='tooltip' data-placement='top' id=\"title_checkout"+id+"\" ><i class='fa fa-long-arrow-right'></i></span>" +
+                                "<div class='line'></div>" +
+                                "</li>" +
+                                "<li class=''  id=Build" + id + ">" +
+//                            "<span class='name'>Build</span>" +
+                                "<span class='dot' data-toggle='tooltip' data-placement='top' id=\"title_Build"+id+"\" ><i class='fa fa-long-arrow-right'></i></span>" +
+                                "<div class='line'></div>" +
+                                "</li>" +
+                                "<li class='' id=UT" + id + ">" +
+//                            "<span class='name'>UT</span>" +
+                                "<span class='dot' data-toggle='tooltip' data-placement='top'  id=\"title_UT"+id+"\" ><i class='fa fa-long-arrow-right'></i></span>" +
+                                "<div class='line'></div>" +
+                                "</li>" +
+                                "<li class='' id=TA" + id + ">" +
+//                            "<span class='name'>TA</span>" +
+                                "<span class='dot' data-toggle='tooltip' data-placement='top'  id=\"title_TA"+id+"\" ><i class='fa fa-long-arrow-right'></i></span>" +
+                                "<div class='line'></div>" +
+                                "<div class='line-y'></div>" +
+                                "</li>" +
+                                "</ul>";
+                        return strings;
+                    }
+
+                    var json = eval(data);
+                    var stage = json.stage;
+
+                    $("#author").text(json.property.author);
+
+                    //遍历checkin pr 和 merge
+                    for (var i = 0; i < stage.length; i++) {
+
+                        if (stage[i].name == "checkin") {
+                            document.getElementById("title_" + stage[i].name).title = "</br><div align='left'>project:" + json.property.stashproject + "</div></br>" +
+                                    "<div align='left'>repository:" + json.property.repository + "</div><br><div align='left'>branch:" + json.property.branch + "</div></br>" +
+                                    "<br><div align='left'>starttime:" + stage[i].starttime + "</div></br>";
+
+                        } else if (stage[i].name == "pr") {
+                            document.getElementById("title_" + stage[i].name).title = "</br><div align='left'>createtime:" + stage[i].createtime + "</div></br>" +
+                                    "<div align='left'>updatetime:" + stage[i].updatetime + "</div></br>" +
+                                    "<div align='left'>status:" + stage[i].statusname + "</div></br><div align='left'>author:" + stage[i].author + "</div></br>";
+                        } else {
+                            document.getElementById("title_" + stage[i].name).title = "</br><div align='left'>endtime:" + stage[i].endtime + "</div></br>" +
+                                    "<div align='left'>totaltime:" + stage[i].endtime + "</div><br>";
+
+                        }
+                        if (stage[i].status == '1') {
+                            $("#" + stage[i].name).addClass('active');
+                        } else if (stage[i].status == '2') {
+                            $("#" + stage[i].name).addClass('finish');
+                        } else {
+                            $("#" + stage[i].name).addClass('failed');
+                        }
+                    }
+
+                    var build = json.build;
+                    var args = [];
+                    if (build != null) {
+                        //遍历剩余的流程
+                        for (var i = 0; i < build.length; i++) {
+                            var stepjob = build[i].stepjob;
+                            if (stepjob != null) {
+                                if (i > 0) {
+                                    $("#status").append(function_name(i,stepjob));
+                                }
+
+                                for (var j = 0; j < stepjob.length; j++) {
+
+                                    $("#title_" + stepjob[j].stepname+i).attr({"title": "</br><div align='left'>createtime:" + stepjob[j].createtime + "</div></br>" +
+                                    "<div align='left'>updatetime:" +stepjob[j].updatetime + "</div><br>"});
+
+                                    if (stepjob[j].status == '1') {
+                                        $("#" + stepjob[j].stepname + i).addClass('active');
+                                    } else if (stepjob[j].status == '2') {
+                                        $("#" + stepjob[j].stepname + i).addClass('finish');
+                                    } else {
+                                        $("#" + stepjob[j].stepname + i).addClass('failed');
+                                    }
+                                    if (stepjob[j].stepname == 'TA') {
+                                        args.push(stepjob[j].status);
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+
+                    //判断最终状态
+                    var flag0 = 1;
+
+//                console.log(args);
+//                console.log(args.length);
+//                if (args.length!=0) {
+//
+//                       if($.inArray("3", args)!=-1){
+//                            $("#merge").addClass("failed");
+//                        }else {
+//                            if ($.inArray("1", args)==-1) {
+//                               $("#merge").addClass('finish');
+//                            }
+//                        }
+//                }
+
+
+                    var logs = json.logs;
+                    var ul = document.getElementById("plogs");
+                    $("#plogs").find("li").remove();
+                    for (var i = 0; i < logs.length; i++) {
+                        var obj = document.createElement("div");
+
+                        //log status
+                        var classname = '';
+                        if (logs[i].status == '3') {
+                            classname = 'failed';
+                        } else {
+                            classname = '';
+                        }
+                        obj.innerHTML = "<li class='" + classname + "'><span class='date'>" + logs[i].timestamp + "</span><span class='text'>" + logs[i].log + "</span><span class='link'><a href='"+logs[i].url+"' title='"+logs[i].url+"' target='_blank'>link</a></span></li>";
+                        ul.appendChild(obj);
+
+//           ul.innerHTML(" <li class=''><span class='date'>2016-05-20</span><span class='text'>sssss</span><a href='' alt='sdfasdfa'>ssss</a></li>");
+                    }
+
+
+                }
+            });
+
+        });
+    </script>
+
+
+
+</head>
+<body>
+<div class="navbar">
+    <div class="navbar-inner">
+        <span class="brand">
+           <img src="img/cisco-webex-ci1.png">
+        </span>
+        <div class="nav-collapse collapse navbar-responsive-collapse">
+            <ul class="nav">
+                <li class="divider-vertical"></li>
+            </ul>
+        </div><!-- /.nav-collapse -->
+    </div>
+</div>
+<div class="container2" >
+    <h1 class="mui-title">Gate Pipeline</h1>
+    <!--  -->
+    <div class="td-container">
+        <div class="row">
+            <!--  -->
+            <div class="col-sm-12" style="height:60px;">
+                <ul class="checkout-bar">
+                    <li class=" first" id="checkin">
+                        <span class="name">Checkin</span>
+                        <a class="dot" data-toggle="tooltip" data-placement="top" id="title_checkin" href="http://www.baidu.com">
+                            <i class="fa fa-long-arrow-right"></i>
+                        </a>
+                    </li>
+                    <li class="" id="pr">
+                        <span class="name" >Pull Request</span>
+                        <span class="dot" data-toggle="tooltip" data-placement="top" id="title_pr" >
+                            <i class="fa fa-long-arrow-right"></i>
+                        </span>
+                    </li>
+                    <li class="" id="checkout0">
+                        <span class="name">Checkout</span>
+                        <span class="dot" data-toggle="tooltip" data-placement="top" id="title_checkout0" >
+                            <i class="fa fa-long-arrow-right"></i>
+                        </span>
+                    </li>
+                    <li class="" id="Build0">
+                        <span class="name">Build</span>
+                        <span class="dot" data-toggle="tooltip" data-placement="top" id="title_Build0" >
+                            <i class="fa fa-long-arrow-right"></i>
+                        </span>
+                    </li>
+                    <li class="" id="UT0">
+                        <span class="name">UT</span>
+                        <span class="dot" data-toggle="tooltip" data-placement="top" id="title_UT0">
+                            <i class="fa fa-long-arrow-right"></i>
+                        </span>
+                    </li>
+                    <li class="" id="TA0">
+                        <span class="name">TA</span>
+                        <span class="dot" data-toggle="tooltip" data-placement="top" id="title_TA0">
+                            <i class="fa fa-long-arrow-right"></i>
+                        </span>
+                    </li>
+                    <li class="merge" id="merge">
+                        <span class="name" >Merge</span>
+                        <span class="dot" data-toggle="tooltip" data-placement="top" id="title_merge" >
+                            <i class="fa fa-long-arrow-right"></i>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="branch-status">
+                    <div class="status-box">
+                        <div class="status-list-box">
+                            <div class="status-list" id="status">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end -->
+        </div>
+    </div>
+    <!-- end -->
+
+
+    <div class="row" style="margin-top:20px;">
+        <div class="tabbable-panel">
+            <div class="tabbable-line">
+                <div class="row" style="padding-bottom:10px;">
+                    <div class="col-sm-3"><strong class="text-muted">CommitId:</strong><span class="text-gray pl5" id="commitId"></span></div>
+                    <div class="col-sm-3"><strong class="text-muted">Repository:</strong><span class="text-gray pl5" id="repository"></span></div>
+                    <div class="col-sm-3"><strong class="text-muted">Branch:</strong><span class="text-gray pl5" id="branch"></span></div>
+                    <div class="col-sm-3"><strong class="text-muted">Author:</strong><span class="text-gray pl5" id="author"></span></div>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="push-code">
+
+                        <div class="panel panel-default" style="height:400px;overflow-y: auto;">
+                            <div class="panel-body" >
+                                <div class="branch-details">
+                                    <ul class="details-ul" id="plogs"></ul>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <span class="copy">Cisco WebEx CI team Copyright © 2016  <a href="mailto:webexci@cisco.com">webexci@cisco.com</a></span>
+</footer>
+<script src="js/bootstrap.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        var options = {
+            html: true
+        }
+        $('[data-toggle="tooltip"]').tooltip(options);
+
+        $('#myPopover').on('hidden.bs.popover', function () {
+            // do something…
+        })
+    })
+</script>
+</body>
+</html>

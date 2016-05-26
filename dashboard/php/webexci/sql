@@ -1,0 +1,54 @@
+SELECT
+   com.COMMITID,
+   com.STASHPROJECT,
+   com.REPOSITORY,
+   com.BRANCH,
+   com.TYPE,
+   com.AUTHOR,
+   com.EMAIL
+ FROM
+   (SELECT
+      COMMITID,
+      STASHPROJECT,
+      REPOSITORY,
+      BRANCH,
+      TYPE,
+      AUTHOR,
+      EMAIL
+    FROM scm_commit com
+    WHERE com.BRANCH LIKE '%gate%' AND com.COMMITID = 'e5a07ed394350c7f58d03688eca538ee572148e3' AND
+          com.STASHPROJECT = 'cctgfork' AND
+          com.REPOSITORY = 'myTest' AND com.BRANCH = 'refs/heads/gate/penghu3'
+   ) com
+   LEFT JOIN
+   (SELECT
+      spr.COMMITID,
+      spr.STASHPROJECT,
+      spr.REPOSITORY,
+      spr.SOURCEBRANCH,
+      spr.STATUS AS 'PRSTATUS'
+    FROM scm_pullrequest spr
+
+   ) pr ON com.COMMITID = pr.COMMITID AND com.STASHPROJECT = pr.STASHPROJECT AND com.REPOSITORY = pr.REPOSITORY AND
+           substring(com.BRANCH, 12, length(com.BRANCH)) = pr.SOURCEBRANCH
+   LEFT JOIN
+   (SELECT
+      j.COMMITID,
+      j.STASHPROJECT,
+      j.REPOSITORY,
+      j.BRANCH,
+      j.JOBID,
+      j.STATUS AS 'JOBSTATUS'
+    FROM ec_job j
+   ) job ON com.COMMITID = job.COMMITID AND com.STASHPROJECT = job.STASHPROJECT AND com.REPOSITORY = job.REPOSITORY AND
+            substring(com.BRANCH, 12, length(com.BRANCH)) = job.BRANCH
+   LEFT JOIN
+   (SELECT
+      ecs.JOBID,
+      ecs.STEPID,
+      STEPNAME,
+      status AS 'STEPSTATUS'
+
+    FROM ec_jobstep ecs
+
+   )

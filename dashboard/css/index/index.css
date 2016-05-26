@@ -1,0 +1,45 @@
+
+.header{
+    width: 90%;
+    height: 60px;
+    line-height: 60px;
+    border: 1px solid #999999;
+    border-radius: 5px;
+    margin: 40px auto;
+    background-color: #3c6aa1;
+}
+.header strong{
+    width: 70px;
+    height: 20px;
+    margin: auto 20px;
+}
+.research, .table{
+  width: 90%;
+  margin: 0 auto;
+}
+.content .inline{
+  display: inline-block;
+  margin-right: 10px;
+}
+.content .inline span{
+  margin-right: 10px;
+}
+.content .inline input{
+  padding: 2px 5px;
+  height:30px;
+  width: 120px;
+}
+.table table{
+  width: 100%;
+}
+table.content.tablehead.font{
+    font-weight:bold;
+    background-color:#F7F7F7;
+}
+
+body {
+    font-family: "Helvetica Neue Light", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+
+}

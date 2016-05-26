@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - webexci@172.19.55.239" uuid="2fd185f0-04a1-4fbb-833c-0847e6a8629f">
+    <database-info product="MySQL" version="5.1.69" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <database-model serializer="dbm" rdbms="MYSQL" format-version="2.5">
+      <schema id="1" name="webexci"/>
+      <table id="2" parent="1" name="ec_job"/>
+      <table id="3" parent="1" name="ec_job_log"/>
+      <table id="4" parent="1" name="ec_jobstep"/>
+      <table id="5" parent="1" name="ec_jobstep_log"/>
+      <table id="6" parent="1" name="ec_stepsequence"/>
+      <table id="7" parent="1" name="parameters"/>
+      <table id="8" parent="1" name="scm_commit"/>
+      <table id="9" parent="1" name="scm_pullrequest"/>
+      <table id="10" parent="1" name="scm_pullrequest_log"/>
+      <column id="11" parent="2" name="JOBID">
+        <mandatory>1</mandatory>
+        <data-type>varchar(40)</data-type>
+      </column>
+      <column id="12" parent="2" name="JOBNAME">
+        <data-type>varchar(100)</data-type>
+      </column>
+      <column id="13" parent="2" name="COMPONENTNAME">
+        <data-type>varchar(100)</data-type>
+      </column>
+      <column id="14" parent="2" name="BUILDNUMBER">
+        <data-type>varchar(20)</data-type>
+      </column>
+      <column id="15" parent="2" name="VERSION">
+        <data-type>varchar(10)</data-type>
+      </column>
+      <column id="16" parent="2" name="BUILDOPTION">
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="17" parent="2" name="WAITTIME">
+        <data-type>time</data-type>
+      </column>
+      <column id="18" parent="2" name="COMMITID">
+        <data-type>varchar(50)</data-type>
+      </column>
+      <column id="19" parent="2" name="STASHPROJECT">
+        <data-type>varchar(60)</data-type>
+      </column>
+      <column id="20" parent="2" name="REPOSITORY">
+        <data-type>varchar(60)</data-type>
+      </column>
+      <column id="21" parent="2" name="BRANCH">
+        <data-type>varchar(60)</data-type>
+      </column>
+      <column id="22" parent="2" name="FEATUREID">
+        <data-type>varchar(20)</data-type>
+      </column>
+      <column id="23" parent="2" name="STATUS">
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="24" parent="2" name="LAUNCHUSER">
+        <data-type>varchar(200)</data-type>
+      </column>
+      <key id="25" parent="2" name="PRIMARY">
+        <columns>JOBID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="26" parent="3" name="ID">
+        <mandatory>1</mandatory>
+        <data-type>int(10) unsigned</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="27" parent="3" name="JOBID">
+        <mandatory>1</mandatory>
+        <data-type>varchar(40)</data-type>
+      </column>
+      <column id="28" parent="3" name="LOGTIME">
+        <data-type>datetime</data-type>
+      </column>
+      <column id="29" parent="3" name="LOG">
+        <data-type>text</data-type>
+      </column>
+      <index id="30" parent="3" name="FK_ECJOB_ECJOBL">
+        <columns>JOBID</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="31" parent="3" name="PRIMARY">
+        <columns>ID</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="32" parent="3" name="FK_ECJOB_ECJOBL">
+        <columns>JOBID</columns>
+        <ref-key>~.ec_job.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="33" parent="4" name="STEPID">
+        <mandatory>1</mandatory>
+        <data-type>varchar(40)</data-type>
+      </column>
+      <column id="34" parent="4" name="JOBID">
+        <mandatory>1</mandatory>
+        <data-type>varchar(40)</data-type>
+      </column>
+      <column id="35" parent="4" name="STEPSEQUENCEID">
+        <mandatory>1</mandatory>
+        <data-type>int(10) unsigned</data-type>
+      </column>
+      <column id="36" parent="4" name="WAITTIME">
+        <data-type>time</data-type>
+      </column>
+      <column id="37" parent="4" name="RESOURCENAME">
+        <data-type>varchar(200)</data-type>
+      </column>
+      <column id="38" parent="4" name="STATUS">
+        <data-type>int(11)</data-type>
+      </column>
+      <index id="39" parent="4" name="FK_EC_STEPJ_REFERENCE_EC_JOB">
+        <columns>JOBID</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="40" parent="4" name="FK_EC_STEPJ_REFERENCE_EC_STEPS">
+        <columns>STEPSEQUENCEID</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="41" parent="4" name="PRIMARY">
+        <columns>JOBID
+STEPSEQUENCEID</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="42" parent="4" name="FK_EC_STEPJ_REFERENCE_EC_JOB">
+        <columns>JOBID</columns>
+        <ref-key>~.ec_job.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <foreign-key id="43" parent="4" name="FK_EC_STEPJ_REFERENCE_EC_STEPS">
+        <columns>STEPSEQUENCEID</columns>
+        <ref-key>~.ec_stepsequence.PRIMARY</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="44" parent="5" name="ID">
+        <mandatory>1</mandatory>
+        <data-type>int(10) unsigned</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="45" parent="5" name="JOBID">
+        <mandatory>1</mandatory>
+        <data-type>varchar(40)</data-type>
+      </column>
+      <column id="46" parent="5" name="STEPSEQUENCEID">
+        <mandatory>1</mandatory>
+        <data-type>int(10) unsigned</data-type>
+      </column>
+      <column id="47" parent="5" name="LOGTIME">
+        <data-type>datetime</data-type>
+      </column>
+      <column id="48" parent="5" name="LOG">
+        <data-type>text</data-type>
+      </column>
+      <index id="49" parent="5" name="FK_EC_STEPJ_REFERENCE_EC_STEPJ">
+        <columns>JOBID</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <index id="50" parent="5" name="FK_EC_STEPJ_REFERENCE_EC_STEPJSE">
+        <columns>STEPSEQUENCEID</columns>
+        <desc-columns></desc-columns>
+      </index>
+      <key id="51" parent="5" name="PRIMARY">
+        <columns>ID</columns>
+        <primary>1</primary>
+      </key>
+      <foreign-key id="52" parent="5" name="FK_EC_STEPJ_REFERENCE_EC_STEPJ">
+        <columns>JOBID</columns>
+        <ref-key>webexci.ec_jobstep(JOBID)</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <foreign-key id="53" parent="5" name="FK_EC_STEPJ_REFERENCE_EC_STEPJSE">
+        <columns>STEPSEQUENCEID</columns>
+        <ref-key>webexci.ec_jobstep(STEPSEQUENCEID)</ref-key>
+        <cascade-update-rule>restrict</cascade-update-rule>
+        <cascade-delete-rule>restrict</cascade-delete-rule>
+      </foreign-key>
+      <column id="54" parent="6" name="STEPSEQUENCEID">
+        <mandatory>1</mandatory>
+        <data-type>int(10) unsigned</data-type>
+      </column>
+      <column id="55" parent="6" name="STEPINDEX">
+        <data-type>int(10) unsigned</data-type>
+      </column>
+      <column id="56" parent="6" name="STEPNAME">
+        <data-type>varchar(100)</data-type>
+      </column>
+      <key id="57" parent="6" name="PRIMARY">
+        <columns>STEPSEQUENCEID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="58" parent="7" name="ID">
+        <mandatory>1</mandatory>
+        <data-type>int(10) unsigned</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="59" parent="7" name="PARAMKEY">
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="60" parent="7" name="PARAMVALUE">
+        <data-type>varchar(50)</data-type>
+      </column>
+      <column id="61" parent="7" name="PARAMGROUP">
+        <data-type>varchar(50)</data-type>
+      </column>
+      <key id="62" parent="7" name="PRIMARY">
+        <columns>ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="63" parent="8" name="ID">
+        <mandatory>1</mandatory>
+        <data-type>int(10) unsigned</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="64" parent="8" name="COMMITID">
+        <data-type>varchar(50)</data-type>
+      </column>
+      <column id="65" parent="8" name="STASHPROJECT">
+        <data-type>varchar(60)</data-type>
+      </column>
+      <column id="66" parent="8" name="REPOSITORY">
+        <data-type>varchar(60)</data-type>
+      </column>
+      <column id="67" parent="8" name="BRANCH">
+        <data-type>varchar(60)</data-type>
+      </column>
+      <column id="68" parent="8" name="TIMESTAMP">
+        <data-type>datetime</data-type>
+      </column>
+      <column id="69" parent="8" name="TYPE">
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="70" parent="8" name="AUTHOR">
+        <data-type>varchar(200)</data-type>
+      </column>
+      <column id="71" parent="8" name="EMAIL">
+        <data-type>varchar(200)</data-type>
+      </column>
+      <column id="72" parent="8" name="COMMITS">
+        <data-type>text</data-type>
+      </column>
+      <column id="73" parent="8" name="LOGTIME">
+        <data-type>datetime</data-type>
+      </column>
+      <key id="74" parent="8" name="PRIMARY">
+        <columns>ID</columns>
+        <primary>1</primary>
+      </key>
+      <column id="75" parent="9" name="COMMITID">
+        <data-type>varchar(50)</data-type>
+      </column>
+      <column id="76" parent="9" name="STASHPROJECT">
+        <mandatory>1</mandatory>
+        <data-type>varchar(60)</data-type>
+      </column>
+      <column id="77" parent="9" name="REPOSITORY">
+        <mandatory>1</mandatory>
+        <data-type>varchar(60)</data-type>
+      </column>
+      <column id="78" parent="9" name="SOURCEBRANCH">
+        <data-type>varchar(60)</data-type>
+      </column>
+      <column id="79" parent="9" name="TARGETBRANCH">
+        <data-type>varchar(60)</data-type>
+      </column>
+      <column id="80" parent="9" name="PULLREQUESTID">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="81" parent="9" name="REVIEWERS">
+        <data-type>varchar(200)</data-type>
+      </column>
+      <column id="82" parent="9" name="STATUS">
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="83" parent="9" name="APPROVER">
+        <data-type>varchar(200)</data-type>
+      </column>
+      <key id="84" parent="9" name="PRIMARY">
+        <columns>PULLREQUESTID
+STASHPROJECT
+REPOSITORY</columns>
+        <primary>1</primary>
+      </key>
+      <column id="85" parent="10" name="ID">
+        <mandatory>1</mandatory>
+        <data-type>int(10) unsigned</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="86" parent="10" name="PULLREQUESTID">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+      </column>
+      <column id="87" parent="10" name="REPOSITORY">
+        <mandatory>1</mandatory>
+        <data-type>varchar(60)</data-type>
+      </column>
+      <column id="88" parent="10" name="STASHPROJECT">
+        <mandatory>1</mandatory>
+        <data-type>varchar(60)</data-type>
+      </column>
+      <column id="89" parent="10" name="LOGTIME">
+        <data-type>datetime</data-type>
+      </column>
+      <column id="90" parent="10" name="LOG">
+        <data-type>text</data-type>
+      </column>
+      <key id="91" parent="10" name="PRIMARY">
+        <columns>ID</columns>
+        <primary>1</primary>
+      </key>
+    </database-model>
+  </data-source>
+</component>
